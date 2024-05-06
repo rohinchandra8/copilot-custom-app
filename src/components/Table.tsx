@@ -1,7 +1,7 @@
 import { StatusSelector } from "@/components/StatusSelector";
-import base from "@/utils/airtable";
+import base, { setBugStatus } from "@/utils/airtable";
 
-enum BugStatus {
+export enum BugStatus {
   NEW = "New",
   IN_PROGRESS = "In progress",
   READY_FOR_TESTING = "Ready for testing",
@@ -43,6 +43,11 @@ export default async function Table({ CompanyID }: { CompanyID: string }) {
     console.log(error);
   }
     let headers = ["Bug", "Description", "Status", "Priority"]
+
+    async function callSetBugStatus(recordId: string, status: BugStatus) {
+      "use server"
+      setBugStatus(recordId, status)
+    }
     return (
       <table>
         <thead>
@@ -58,7 +63,13 @@ export default async function Table({ CompanyID }: { CompanyID: string }) {
               <tr key={bug.id}>
                 <td>{ bug.title }</td>
                 <td>{ bug.description }</td>
-                <td><StatusSelector recordId = { bug.id } status={ bug.status }></StatusSelector></td>
+                <td>
+                  <StatusSelector 
+                    recordId = { bug.id }
+                    status={ bug.status }
+                    setStatus={callSetBugStatus}
+                  >
+                  </StatusSelector></td>
                 <td>{ bug.priority }</td>
               </tr>
             );
