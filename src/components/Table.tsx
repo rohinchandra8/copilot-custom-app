@@ -1,10 +1,18 @@
+import { StatusSelector } from "@/components/StatusSelector";
 import base from "@/utils/airtable";
-type Bug = {
+
+enum BugStatus {
+  NEW = "New",
+  IN_PROGRESS = "In progress",
+  READY_FOR_TESTING = "Ready for testing",
+  VERIFIED = "Verified",
+}
+export type Bug = {
   id: string;
   companyID: string;
   title: string;
   description: string;
-  status: string;
+  status: BugStatus;
   priority: string;
 }
 export default async function Table({ CompanyID }: { CompanyID: string }) {
@@ -24,7 +32,7 @@ export default async function Table({ CompanyID }: { CompanyID: string }) {
             companyID: recordCompanyID,
             title: fields.Bug as string,
             description: fields.Description as string,
-            status: fields.Status as string,
+            status: fields.Status as Bug['status'],
             priority: fields.Priority as string
           })
         }
@@ -40,7 +48,7 @@ export default async function Table({ CompanyID }: { CompanyID: string }) {
         <thead>
           <tr>
             {headers.map((head, headID) => (
-                            <th key={headID}>{head}</th>
+            <th key={headID}>{head}</th>
             ))}
           </tr>
         </thead>
@@ -50,7 +58,7 @@ export default async function Table({ CompanyID }: { CompanyID: string }) {
               <tr key={bug.id}>
                 <td>{ bug.title }</td>
                 <td>{ bug.description }</td>
-                <td>{ bug.status }</td>
+                <td><StatusSelector recordId = { bug.id } status={ bug.status }></StatusSelector></td>
                 <td>{ bug.priority }</td>
               </tr>
             );

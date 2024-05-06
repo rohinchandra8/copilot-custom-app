@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { TokenGate } from '@/components/TokenGate';
 import { getSession } from '@/utils/session';  
 import Table from '@/components/Table';
-import base from '@/utils/airtable';
 
 export type Bug = {
   id: string;
