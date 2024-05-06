@@ -1,5 +1,5 @@
 import { StatusSelector } from "@/components/StatusSelector";
-import base, { setBugStatus } from "@/utils/airtable";
+import { setBugStatus } from "@/utils/airtable";
 
 export enum BugStatus {
   NEW = "New",
@@ -15,33 +15,8 @@ export type Bug = {
   status: BugStatus;
   priority: string;
 }
-export default async function Table({ CompanyID }: { CompanyID: string }) {
-  const table = base('Tasks').select({ 
-    view: 'Grid view', 
-  })
+export default async function Table({ bugs }: { bugs: Bug[] }) {
 
-  const bugs: Bug[] = []
-
-  try {
-    await table.eachPage((records, processNextPage) => {
-      records.forEach(({ fields, id }) => {
-        const recordCompanyID = fields.CompanyID as string;
-        if (recordCompanyID === CompanyID) {
-          bugs.push({
-            id,
-            companyID: recordCompanyID,
-            title: fields.Bug as string,
-            description: fields.Description as string,
-            status: fields.Status as Bug['status'],
-            priority: fields.Priority as string
-          })
-        }
-      });
-      processNextPage();
-    });
-  } catch (error) {
-    console.log(error);
-  }
     let headers = ["Bug", "Description", "Status", "Priority"]
 
     async function callSetBugStatus(recordId: string, status: BugStatus) {

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { TokenGate } from '@/components/TokenGate';
 import { getSession } from '@/utils/session';  
 import Table from '@/components/Table';
+import { getBugsFromAirtable } from '@/utils/airtable';
 
 export type Bug = {
   id: string;
@@ -18,9 +19,11 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
   // you run `yarn dev`
   console.log({ data });
   const companyID = data.company?.id || '';
+  const airtableBugs = await getBugsFromAirtable(companyID);
+  console.log(airtableBugs)
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Table CompanyID={companyID}></Table>
+      <Table bugs={airtableBugs}></Table>
     </main>
   );
 }

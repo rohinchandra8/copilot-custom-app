@@ -1,11 +1,55 @@
-import { BugStatus } from "@/components/Table";
+import { Bug, BugStatus } from "@/components/Table";
+import { need } from "@/utils/need";
 import Airtable  from "airtable"
 
-const base = new Airtable({ apiKey: process.env.AIRTABLE_AUTH_TOKEN}).base("apphoSlbv6QLidu3F")
+export async function getBugsFromAirtable(CompanyID: string) {
+    const authToken = need<string>(
+        process.env.AIRTABLE_AUTH_TOKEN,
+        'AIRTABLE_AUTH_TOKEN is required, guide available at: https://docs.copilot.com/docs/custom-apps-setting-up-your-first-app#step-2-register-your-app-and-get-an-api-key',
+      );
+    const base = new Airtable({ apiKey: authToken}).base("apphoSlbv6QLidu3F")
+    
+    const table = base('Tasks').select({ 
+        view: 'Grid view', 
+      })
+    
+      const bugs: Bug[] = []
+    
+      try {
+        await table.eachPage((records, processNextPage) => {
+          records.forEach(({ fields, id }) => {
+            const recordCompanyID = fields.CompanyID as string;
+            if (recordCompanyID === CompanyID) {
+              bugs.push({
+                id,
+                companyID: recordCompanyID,
+                title: fields.Bug as string,
+                description: fields.Description as string,
+                status: fields.Status as Bug['status'],
+                priority: fields.Priority as string
+              })
+            }
+          });
+          processNextPage();
+        });
+      } catch (error) {
+        console.log(error);
+      }
 
-export default base;
+      return bugs;
+}
 
 export async function setBugStatus(id: string, status: BugStatus){
+    const authToken = need<string>(
+        process.env.AIRTABLE_AUTH_TOKEN,
+        'AIRTABLE_AUTH_TOKEN is required, guide available at: https://docs.copilot.com/docs/custom-apps-setting-up-your-first-app#step-2-register-your-app-and-get-an-api-key',
+      );
+    const base = new Airtable({ apiKey: authToken}).base("apphoSlbv6QLidu3F")
+    
+    const table = base('Tasks').select({ 
+        view: 'Grid view', 
+      })
+
     base('Tasks').update([
         {
             "id": id,
