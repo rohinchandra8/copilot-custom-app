@@ -1,4 +1,5 @@
-import { Bug, BugStatus } from "@/components/Table";
+
+import { Bug, BugStatus } from "@/components/Bug";
 import { need } from "@/utils/need";
 import Airtable  from "airtable"
 
@@ -45,11 +46,7 @@ export async function setBugStatus(id: string, status: BugStatus){
         'AIRTABLE_AUTH_TOKEN is required, guide available at: https://docs.copilot.com/docs/custom-apps-setting-up-your-first-app#step-2-register-your-app-and-get-an-api-key',
       );
     const base = new Airtable({ apiKey: authToken}).base("apphoSlbv6QLidu3F")
-    
-    const table = base('Tasks').select({ 
-        view: 'Grid view', 
-      })
-
+  
     base('Tasks').update([
         {
             "id": id,

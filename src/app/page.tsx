@@ -25,7 +25,7 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
       <h1 className="text-3xl p-12">Bugs</h1>
       <div>
         {airtableBugs.map(bug => {
-          return <Bug bug={bug}></Bug>
+          return <Bug key={bug.id} bug={bug}></Bug>
         })}
       </div>
     </main>
