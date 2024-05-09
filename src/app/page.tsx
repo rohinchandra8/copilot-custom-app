@@ -21,9 +21,9 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
   const airtableBugs = await getBugsFromAirtable(companyID);
   console.log(airtableBugs)
   return (
-    <main className="flex min-h-screen flex-col items-center p-12">
-      <h1 className="text-3xl p-12">Bugs</h1>
-      <div>
+    <main className="flex flex-col items-center p-24">
+      <h1 className="text-3xl">Bugs</h1>
+      <div className="flex flex-col">
         {airtableBugs.map(bug => {
           return <Bug key={bug.id} bug={bug}></Bug>
         })}

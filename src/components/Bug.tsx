@@ -23,16 +23,22 @@ export default async function Bugs({ bug}: { bug: Bug }) {
     }
     return (
       <div className="flex flex-row">
-        <p>{ bug.title }</p>
-        <p>{ bug.description }</p>
-        <p>
+        <div className="flex-1">
+          <p>{ bug.title }</p>
+        </div>
+        <div className="flex-1">
+          <p>{ bug.description }</p>        
+        </div>
+        <div className="flex-1">
           <StatusSelector 
             recordId = { bug.id }
             status={ bug.status }
             setStatus={callSetBugStatus}
           >
-          </StatusSelector></p>
-        <p>{ bug.priority }</p>
+          </StatusSelector></div>
+        <div className="flex-1">
+          { bug.priority }
+        </div>
       </div>
     );
 }
