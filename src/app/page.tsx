@@ -1,16 +1,8 @@
 import { TokenGate } from '@/components/TokenGate';
 import { getSession } from '@/utils/session';  
-import { getBugsFromAirtable } from '@/utils/airtable';
-import Bug from '@/components/Bug';
+import { getTasksFromAirtable } from '@/utils/airtable';
+import Task from '@/components/Task';
 
-export type Bug = {
-  id: string;
-  companyID: string;
-  title: string;
-  description: string;
-  status: string;
-  priority: string;
-}
 async function Content({ searchParams }: { searchParams: SearchParams }) {
   const data = await getSession(searchParams);
   // Console log the data to see what's available
@@ -18,14 +10,14 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
   // you run `yarn dev`
   console.log({ data });
   const companyID = data.company?.id || '';
-  const airtableBugs = await getBugsFromAirtable(companyID);
-  console.log(airtableBugs)
+  const airtableTasks = await getTasksFromAirtable(companyID);
+  console.log(airtableTasks)
   return (
     <main className="flex flex-col items-center mt-12">
-      <h1 className="flex-1 text-3xl mb-12 font-archivo font-semibold">Bugs</h1>
+      <h1 className="flex-1 text-3xl mb-12 font-archivo font-semibold">Tasks</h1>
       <div className="flex flex-col">
-        {airtableBugs.map(bug => {
-          return <Bug key={bug.id} bug={bug}></Bug>
+        {airtableTasks.map(task => {
+          return <Task key={task.id} Task={task}></Task>
         })}
       </div>
     </main>
