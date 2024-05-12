@@ -1,6 +1,5 @@
-
-'use client'
-import { Select, Option } from "@material-tailwind/react";
+"use client"
+import { Select } from '@headlessui/react'
 import { useState } from "react";
 enum BugStatus {
   NEW = "New",
@@ -24,22 +23,19 @@ export function StatusSelector({ recordId, status, setStatus }: { recordId: stri
     ]
     )
     const initialSelectedOption = valuesMap.get(status)
-    const [selectedOption, setSelectedOption] = useState(initialSelectedOption)
+    const [selectedoption, setSelectedoption] = useState(initialSelectedOption)
 
     function onSelection(value: string | undefined) {
-      setSelectedOption(value)
       if (value) {
+        setSelectedoption(value)
         setStatus(recordId, statusMap.get(value))
       }
     }
-
     return (
-      <div className="w-72">
-        <Select value={ selectedOption } onChange={(val) => onSelection(val)}>
-          <Option value="new">New</Option>
-          <Option value="inProgress">In Progress</Option>
-          <Option value="readyForTesting">Ready For Testing</Option>
-          <Option value="verified">Verified</Option>
-        </Select>
-      </div>
+      <Select value={ selectedoption } onChange={(e) => onSelection(e.target.value)}>
+        <option value="new">New</option>
+        <option value="inProgress">In Progress</option>
+        <option value="readyForTesting">Ready For Testing</option>
+        <option value="verified">Verified</option>
+      </Select>
     )}

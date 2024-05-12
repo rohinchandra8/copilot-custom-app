@@ -43,8 +43,8 @@ export default async function Bugs({ bug}: { bug: Bug }) {
           </div>
           <div className="pl-12 pr-12 pt-2 pb-2 flex-1">
             <div>
-            <p className="text-gray-500 pb-1">Priority</p>
-            <p className="text-neutral-950">{ bug.priority }</p>    
+              <p className="text-gray-500 pb-1">Priority</p>
+              <p className="text-neutral-950">{ bug.priority }</p>    
             </div>
           </div>
           <div className="pl-12 pr-12 pt-2 pb-2 flex-1">
