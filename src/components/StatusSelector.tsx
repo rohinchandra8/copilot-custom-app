@@ -8,31 +8,41 @@ enum BugStatus {
   VERIFIED = "Verified",
 }
 export function StatusSelector({ recordId, status, setStatus }: { recordId: string, status: BugStatus, setStatus: any }) {
-    let valuesMap = new Map<BugStatus, string>([
+    const valuesMap = new Map<BugStatus, string>([
       [BugStatus.NEW, "new"],
       [BugStatus.IN_PROGRESS, "inProgress"],
       [BugStatus.READY_FOR_TESTING, "readyForTesting"],
       [BugStatus.VERIFIED, "verified"]
-    ]
+      ]
     )
-    let statusMap = new Map<string, BugStatus>([
-      ["new", BugStatus.NEW,],
-      ["inProgress", BugStatus.IN_PROGRESS,],
+    const statusMap = new Map<string, BugStatus>([
+      ["new", BugStatus.NEW],
+      ["inProgress", BugStatus.IN_PROGRESS],
       ["readyForTesting", BugStatus.READY_FOR_TESTING],
-      ["verified", BugStatus.VERIFIED,]
-    ]
+      ["verified", BugStatus.VERIFIED]
+      ]
     )
+    const colorMap = new Map<string | undefined, string>([
+      ["new", "bg-red-100"],
+      ["inProgress", "bg-orange-100"],
+      ["readyForTesting", "bg-green-100"],
+      ["verified", "bg-green-500",]
+    ])
     const initialSelectedOption = valuesMap.get(status)
-    const [selectedoption, setSelectedoption] = useState(initialSelectedOption)
+    const [selectedoption, setSelectedOption] = useState(initialSelectedOption)
+    const [color, setColor] = useState(colorMap.get(initialSelectedOption))
 
     function onSelection(value: string | undefined) {
       if (value) {
-        setSelectedoption(value)
+        setSelectedOption(value)
         setStatus(recordId, statusMap.get(value))
+        setColor(colorMap.get(value))
       }
     }
     return (
-      <Select value={ selectedoption } onChange={(e) => onSelection(e.target.value)}>
+      <Select className={`${color} border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5`} 
+              value={ selectedoption } 
+              onChange={(e) => onSelection(e.target.value)}>
         <option value="new">New</option>
         <option value="inProgress">In Progress</option>
         <option value="readyForTesting">Ready For Testing</option>
