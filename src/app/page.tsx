@@ -14,7 +14,7 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
   console.log(airtableTasks)
   return (
     <main className="flex flex-col items-center mt-12">
-      <h1 className="flex-1 text-3xl mb-12 font-archivo font-semibold">Tasks</h1>
+      <h1 className="flex-1 text-3xl mb-12 font-archivo font-semibold">Designs for {data.company?.name}</h1>
       <div className="flex flex-col">
         {airtableTasks.map(task => {
           return <Task key={task.id} Task={task}></Task>

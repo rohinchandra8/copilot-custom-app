@@ -19,6 +19,7 @@ export type Task = {
   companyID: string;
   title: string;
   description: string;
+  link: string;
   deadline: Date;
   status: TaskStatus;
   priority: TaskPriority;
@@ -30,6 +31,8 @@ export default async function Tasks({ Task }: { Task: Task }) {
       setTaskStatus(recordId, status)
     }
     const deadlineString = new Intl.DateTimeFormat('en-US').format(Task.deadline)
+    const linkString = Task.link ? "Click" : "Not Available"
+    const linkStyle = Task.link ? "text-blue-400 text-sm" : "text-gray-950 text-sm"
     return (
       <div className="p-8 border-solid border-2 border-neutral-100 rounded-3xl shadow mb-4 font-archivo">
         <b className="text-xl pl-12">{ Task.title }</b>
@@ -37,6 +40,10 @@ export default async function Tasks({ Task }: { Task: Task }) {
           <div className="pl-12 pr-12 pt-2 pb-2 flex-1">
             <p className="text-gray-500 pb-1">Description</p>
             <p className="text-neutral-950 text-sm">{ Task.description }</p>    
+          </div>
+          <div className="pl-12 pr-12 pt-2 pb-2 flex-1">
+            <p className="text-gray-500 pb-1">Design</p>
+            <a href={Task.link} target="_blank" rel="noopener noreferrer" className={linkStyle}>{linkString}</a>    
           </div>
           <div className="pl-12 pr-12 pt-2 pb-2 flex-1">
             <p className="text-gray-500 pb-1">Deadline</p>

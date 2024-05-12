@@ -26,6 +26,7 @@ export async function getTasksFromAirtable(CompanyID: string) {
                 companyID: recordCompanyID,
                 title: fields.Task as string,
                 description: fields.Description as string,
+                link: fields.Link as string,
                 deadline: new Date(fields.Deadline as string),
                 status: fields.Status as TaskStatus,
                 priority: fields.Priority as TaskPriority
