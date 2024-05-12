@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
   color: rgb(var(--foreground-rgb));

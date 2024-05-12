@@ -1,5 +1,5 @@
 
-import { Bug, BugStatus } from "@/components/Bug";
+import { Bug, BugPriority, BugStatus } from "@/components/Bug";
 import { need } from "@/utils/need";
 import Airtable  from "airtable"
 
@@ -25,9 +25,10 @@ export async function getBugsFromAirtable(CompanyID: string) {
                 id,
                 companyID: recordCompanyID,
                 title: fields.Bug as string,
+                page: fields.Page as string,
                 description: fields.Description as string,
-                status: fields.Status as Bug['status'],
-                priority: fields.Priority as string
+                status: fields.Status as BugStatus,
+                priority: fields.Priority as BugPriority
               })
             }
           });

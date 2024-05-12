@@ -1,6 +1,6 @@
 
 'use client'
-import { Listbox } from '@headlessui/react'
+import { Select, Option } from "@material-tailwind/react";
 import { useState } from "react";
 enum BugStatus {
   NEW = "New",
@@ -9,32 +9,37 @@ enum BugStatus {
   VERIFIED = "Verified",
 }
 export function StatusSelector({ recordId, status, setStatus }: { recordId: string, status: BugStatus, setStatus: any }) {
-  const options = [
-    { id: BugStatus.NEW, name: BugStatus.NEW, unavailable: false },
-    { id: BugStatus.IN_PROGRESS, name: BugStatus.IN_PROGRESS, unavailable: false },
-    { id: BugStatus.READY_FOR_TESTING, name: BugStatus.READY_FOR_TESTING, unavailable: false },
-    { id: BugStatus.VERIFIED, name: BugStatus.VERIFIED, unavailable: false },
-  ]
-    let initialValueIndex = options.findIndex((option) => option.id === status)
-    const [selectedOption, setSelectedOption] = useState(options[initialValueIndex])
+    let valuesMap = new Map<BugStatus, string>([
+      [BugStatus.NEW, "new"],
+      [BugStatus.IN_PROGRESS, "inProgress"],
+      [BugStatus.READY_FOR_TESTING, "readyForTesting"],
+      [BugStatus.VERIFIED, "verified"]
+    ]
+    )
+    let statusMap = new Map<string, BugStatus>([
+      ["new", BugStatus.NEW,],
+      ["inProgress", BugStatus.IN_PROGRESS,],
+      ["readyForTesting", BugStatus.READY_FOR_TESTING],
+      ["verified", BugStatus.VERIFIED,]
+    ]
+    )
+    const initialSelectedOption = valuesMap.get(status)
+    const [selectedOption, setSelectedOption] = useState(initialSelectedOption)
 
-    function onSelection(value: { id: BugStatus; name: BugStatus; unavailable: boolean; }) {
+    function onSelection(value: string | undefined) {
       setSelectedOption(value)
-      setStatus(recordId, value.name)
+      if (value) {
+        setStatus(recordId, statusMap.get(value))
+      }
     }
+
     return (
-      <Listbox value={selectedOption} onChange={onSelection}>
-        <Listbox.Button>{selectedOption.name}</Listbox.Button>
-        <Listbox.Options>
-          {options.map((option) => (
-            <Listbox.Option
-              key={option.id}
-              value={option}
-              disabled={option.unavailable}
-            >
-              {option.name}
-            </Listbox.Option>
-          ))}
-        </Listbox.Options>
-      </Listbox>
+      <div className="w-72">
+        <Select value={ selectedOption } onChange={(val) => onSelection(val)}>
+          <Option value="new">New</Option>
+          <Option value="inProgress">In Progress</Option>
+          <Option value="readyForTesting">Ready For Testing</Option>
+          <Option value="verified">Verified</Option>
+        </Select>
+      </div>
     )}
